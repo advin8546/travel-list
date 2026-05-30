@@ -1,15 +1,18 @@
-export function Item({ item, handleDel, handlePac }) {
+export function Item({ item, onDeleteItem, onTogglePacked }) {
   return (
     <li>
       <input
         type="checkbox"
         checked={item.packed}
-        onChange={() => handlePac(item.id)}
-      ></input>
-      <span style={item.packed ? { textDecoration: "Line-through" } : {}}>
+        onChange={() => onTogglePacked(item.id)}
+        aria-label={`Mark ${item.description} as packed`}
+      />
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button onClick={() => handleDel(item.id)}>❌</button>
+      <button onClick={() => onDeleteItem(item.id)} aria-label={`Delete ${item.description}`}>
+        X
+      </button>
     </li>
   );
 }
