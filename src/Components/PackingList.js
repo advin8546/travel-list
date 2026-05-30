@@ -1,47 +1,47 @@
 import { useState } from "react";
 import { Item } from "./Item";
 
-export function PackingList({ items, handleDel, handlePac, setItems }) {
+export function PackingList({ items, onDeleteItem, onTogglePacked, onClearItems }) {
   const [sortBy, setSortBy] = useState("input");
-  function B() {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete all items?"
-    );
 
-    if (confirmed) setItems([]);
+  function handleClearItems() {
+    const confirmed = window.confirm("Clear the entire packing list?");
+    if (confirmed) onClearItems();
   }
-  let A = items;
-  if (sortBy === "input") {
-    A = items;
-  }
+
+  let sortedItems = items;
   if (sortBy === "description") {
-    A = items
+    sortedItems = items
       .slice()
       .sort((a, b) => a.description.localeCompare(b.description));
   }
   if (sortBy === "packed") {
-    A = items.slice().sort((a, b) => Number(a.packed) - Number(b.packed));
+    sortedItems = items.slice().sort((a, b) => Number(a.packed) - Number(b.packed));
   }
 
   return (
     <div className="list">
-      <ul>
-        {A.map((item) => (
-          <Item
-            item={item}
-            handleDel={handleDel}
-            key={item.id}
-            handlePac={handlePac}
-          />
-        ))}
-      </ul>
+      {sortedItems.length > 0 ? (
+        <ul>
+          {sortedItems.map((item) => (
+            <Item
+              item={item}
+              onDeleteItem={onDeleteItem}
+              key={item.id}
+              onTogglePacked={onTogglePacked}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p className="empty-state">Add your first item to start planning.</p>
+      )}
       <div className="actions">
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="input">Sort by input order</option>
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
-        <button onClick={B}>Clear list</button>
+        <button onClick={handleClearItems}>Clear list</button>
       </div>
     </div>
   );
