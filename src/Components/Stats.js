@@ -1,21 +1,22 @@
 export function Stats({ items }) {
-  if (!items.length)
+  if (!items.length) {
     return (
       <p className="stats">
-        <em>Start adding some items to your packing list 🚀</em>
+        <em>Start adding items to build your packing plan.</em>
       </p>
     );
-  const itemsL = items.length;
-  const numPacked = items.filter((items) => items.packed).length;
-  const V = Math.round((numPacked / itemsL) * 100);
+  }
+
+  const totalItems = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+  const percentPacked = Math.round((numPacked / totalItems) * 100);
+
   return (
     <footer className="stats">
       <em>
-        {V === 100
-          ? "You got everything! Ready to go ✈️"
-          : `💼You have
-        ${items.length} items on your list, and you already packed
-        ${numPacked} (${V})%`}
+        {percentPacked === 100
+          ? "Everything is packed. You are ready to go."
+          : `You have ${totalItems} items on your list and ${numPacked} packed (${percentPacked}%).`}
       </em>
     </footer>
   );
